@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Resize</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+    <h1>Canvas Fun!</h1>
+    <div id="buttons-container">
+      <button onclick="classCircleAnimate()">Bounce Animation</button>
+    </div>
+    <canvas id="canvas"></canvas>
+  </body>
+
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+    /* html and body have default margin */
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
+  <script src="./bounce.js"></script>
+</html>

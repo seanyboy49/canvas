@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Resize</title>
+  </head>
+
+  <body>
+    <canvas id="canvas"></canvas>
+  </body>
+
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+    /* html and body have default margin */
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
+
+  <script>
+    const canvas = document.getElementById("canvas")
+    const ctx = canvas.getContext("2d")
+
+    // Set canvas dimensions
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    // Draw a box
+    // The rectangle will take immediately preceding style
+    ctx.fillStyle = "rgba(255,0,0,0.1)"
+    ctx.fillRect(100, 100, 100, 100)
+    ctx.fillStyle = "rgba(0,0,255,0.3)"
+    ctx.fillRect(400, 100, 100, 100)
+    ctx.fillStyle = "rgba(0,255,0,0.8)"
+    ctx.fillRect(300, 300, 100, 100)
+
+    // Draw a line
+    // Start a new path. Don't connect it to anything preceding it
+    ctx.beginPath()
+    ctx.moveTo(50, 300)
+    ctx.lineTo(300, 100)
+    ctx.lineTo(500, 300)
+    ctx.strokeStyle = "#BADA55"
+    ctx.stroke()
+
+    // Arc / Circle
+    // If we don't begin a new path, we will connect the previous one
+    ctx.beginPath()
+    ctx.arc(300, 300, 30, 0, Math.PI * 2, false)
+    ctx.stroke()
+
+    // Using a for loop
+    for (let i = 0; i < 10; i++) {
+      const hue = i * 25
+      ctx.lineWidth = i * 0.5
+      ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`
+
+      // Using innerWidth and innerHeight ensures our value will be within
+      // the visible area of the canvas
+      const x = Math.random() * window.innerWidth
+      const y = Math.random() * window.innerHeight
+      ctx.beginPath()
+      ctx.arc(x, y, 30, 0, Math.PI * 2, false)
+      ctx.stroke()
+    }
+  </script>
+</html>

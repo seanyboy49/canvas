@@ -1,0 +1,13 @@
+h1 {
+  font-family: helvetica;
+  text-align: center;
+}
+
+canvas {
+  margin: 20px;
+  border: 10px;
+}
+
+#buttons-container {
+  margin: 20px;
+}
