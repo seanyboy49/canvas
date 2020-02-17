@@ -26,9 +26,8 @@ class Circle {
   draw() {
     ctx.beginPath()
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    ctx.fillStyle = this.color
+    ctx.fillStyle = `#${this.color}`
     ctx.fill()
-    // ctx.stroke()
   }
 
   update() {
@@ -49,22 +48,28 @@ class Circle {
 }
 
 function generateCircles(number) {
+  const colors = ["FA532E", "262626", "DBEFF9", "233D53"]
   const circles = []
+
   for (let i = 0; i < number; i++) {
     // initialize radius, x, y and x and y velocities
-    const radius = 50
-    let x = Math.random() * (canvasWidth - radius * 2) + radius // radius * 2 = circumference
     // Math.random() - 0.5 will give you a random negative or positive value
+    const radius = 30 + (Math.random() - 0.5) * 40
+
+    let x = Math.random() * (canvasWidth - radius * 2) + radius // radius * 2 = circumference
     let directionX = (Math.random() - 0.5) * 10
     let y = Math.random() * (canvasHeight - radius * 2) + radius
     let directionY = (Math.random() - 0.5) * 10
+
+    const color = colors[Math.floor(Math.random() * colors.length)]
 
     const circle = new Circle({
       x,
       y,
       directionX,
       directionY,
-      radius
+      radius,
+      color
     })
 
     circles.push(circle)
