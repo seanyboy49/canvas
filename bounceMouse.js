@@ -4,21 +4,27 @@ const { innerWidth, innerHeight } = window
 
 const canvasMargin = 20
 const canvasWidth = innerWidth - canvasMargin * 2
-const canvasHeight = innerHeight - 200 - canvasMargin * 2
+const canvasHeight = innerHeight - canvasMargin * 2
 // Set canvas dimensions
 canvas.width = canvasWidth
 canvas.height = canvasHeight
 
-window.addEventListener("mousemove", () => {
-  console.log("mouse move")
+let mouseX, mouseY
+
+// Update mouseX and mouseY on mouseMove
+window.addEventListener("mousemove", event => {
+  const { x, y } = event
+  mouseX = x - canvasMargin
+  mouseY = y - canvasMargin
 })
 
 class Circle {
-  constructor({ x, y, directionX, directionY, radius, color = "black" }) {
+  constructor({ x, y, velocityX, velocityY, radius, color = "black" }) {
     this.x = x
     this.y = y
-    this.directionX = directionX
-    this.directionY = directionY
+    this.velocityX = velocityX
+    this.velocityY = velocityY
+    this.intialRadius = radius
     this.radius = radius
     this.color = color
   }
@@ -34,21 +40,38 @@ class Circle {
     this.draw()
     // If the circle reaches the sides, change direction
     if (this.x >= canvasWidth - this.radius || this.x <= 0 + this.radius) {
-      this.directionX = -this.directionX
+      this.velocityX = -this.velocityX
     }
     // If the circles reaches the ceiling or floor, change direction
     if (this.y >= canvasHeight - this.radius || this.y <= 0 + this.radius) {
-      this.directionY = -this.directionY
+      this.velocityY = -this.velocityY
+    }
+
+    // Calculate the distance of the circle from the mouse position
+    const distanceX = Math.abs(mouseX - this.x)
+    const distanceY = Math.abs(mouseY - this.y)
+
+    // The hypotenuse is the distance
+    const distanceXY = Math.hypot(distanceX, distanceY)
+
+    // Circles that move within 100px of the mouse should grow
+    // But they shouldn't grow beyond their initialRadius + some upper bound
+    if (distanceXY <= 100 && this.radius <= this.intialRadius + 50) {
+      this.radius += 10
+      // Circles that move beyond 100px of the mouse should drink back
+      // down to their original size
+    } else if (distanceXY >= 100 && this.radius >= this.intialRadius) {
+      this.radius -= 10
     }
 
     // Increment x and y by direction
-    this.x += this.directionX
-    this.y += this.directionY
+    this.x += this.velocityX
+    this.y += this.velocityY
   }
 }
 
 function generateCircles(number) {
-  const colors = ["FA532E", "262626", "DBEFF9", "233D53"]
+  const colors = ["FA532E", "262626", "DBEFF9", "233D53", "F9F3E6"]
   const circles = []
 
   for (let i = 0; i < number; i++) {
@@ -57,17 +80,17 @@ function generateCircles(number) {
     const radius = 30 + (Math.random() - 0.5) * 40
 
     let x = Math.random() * (canvasWidth - radius * 2) + radius // radius * 2 = circumference
-    let directionX = (Math.random() - 0.5) * 10
+    let velocityX = (Math.random() - 0.5) * 10
     let y = Math.random() * (canvasHeight - radius * 2) + radius
-    let directionY = (Math.random() - 0.5) * 10
+    let velocityY = (Math.random() - 0.5) * 10
 
     const color = colors[Math.floor(Math.random() * colors.length)]
 
     const circle = new Circle({
       x,
       y,
-      directionX,
-      directionY,
+      velocityX,
+      velocityY,
       radius,
       color
     })
@@ -77,7 +100,7 @@ function generateCircles(number) {
   return circles
 }
 
-const circles = generateCircles(50)
+const circles = generateCircles(500)
 
 function classCircleAnimate() {
   // requestAnimationFrame creates a loop that calls animate
