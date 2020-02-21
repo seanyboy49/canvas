@@ -5,6 +5,7 @@ const { innerWidth, innerHeight } = window
 const canvasMargin = 20
 const canvasWidth = innerWidth - canvasMargin * 2
 const canvasHeight = innerHeight - canvasMargin * 2
+
 // Set canvas dimensions
 canvas.width = canvasWidth
 canvas.height = canvasHeight
@@ -56,7 +57,7 @@ class Circle {
 
     // Circles that move within 100px of the mouse should grow
     // But they shouldn't grow beyond their initialRadius + some upper bound
-    if (distanceXY <= 100 && this.radius <= this.intialRadius + 50) {
+    if (distanceXY <= 100 && this.radius <= this.intialRadius + 20) {
       this.radius += 10
       // Circles that move beyond 100px of the mouse should drink back
       // down to their original size
@@ -100,7 +101,7 @@ function generateCircles(number) {
   return circles
 }
 
-const circles = generateCircles(500)
+const circles = generateCircles(300)
 
 function classCircleAnimate() {
   // requestAnimationFrame creates a loop that calls animate
